@@ -246,6 +246,7 @@ initialize_trap_project() {
     droseraup
     foundryup
 
+    cd
     mkdir /root/my-drosera-trap
     cd /root/my-drosera-trap
 
