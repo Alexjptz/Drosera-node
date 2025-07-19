@@ -238,6 +238,10 @@ install_cli_tools() {
     curl -L https://foundry.paradigm.xyz | bash
     curl -fsSL https://bun.sh/install | bash
     show_green "✅ CLI toolchain ready"
+
+    show_orange "⚠️ To apply environment changes, run:"
+    show_blue   "   source ~/.bashrc"
+    show_gray   "💡 Or restart the terminal session"
 }
 
 initialize_trap_project() {
@@ -510,7 +514,6 @@ drosera_main_menu() {
                 install_cli_tools
                 ;;
             2)
-                source /root/.bashrc && \
                 initialize_trap_project && \
                 configure_trap_project
                 ;;
