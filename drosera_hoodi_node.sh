@@ -235,15 +235,23 @@ install_cli_tools() {
 
     # Drosera CLI
     show_orange "🔧 Installing Drosera CLI..."
-    run_commands "curl -L https://app.drosera.io/install | bash && source ~/.bashrc && droseraup"
+    run_commands "curl -L https://app.drosera.io/install | bash"
+    sleep 2
+    source ~/.bashrc
+    droseraup
 
     # Foundry CLI
     show_orange "🔧 Installing Foundry (forge)..."
-    run_commands "curl -L https://foundry.paradigm.xyz | bash && source ~/.bashrc && foundryup"
+    run_commands "curl -L https://foundry.paradigm.xyz | bash"
+    sleep 2
+    source ~/.bashrc
+    foundryup
 
     # Bun
     show_orange "🔧 Installing Bun (JavaScript runtime)..."
-    run_commands "curl -fsSL https://bun.sh/install | bash && source ~/.bashrc"
+    run_commands "curl -fsSL https://bun.sh/install | bash"
+    sleep 2
+    source ~/.bashrc
 
     show_green "✅ CLI toolchain ready"
 }
@@ -444,10 +452,10 @@ operator_menu() {
         menu_header
         menu_item 1 "📝" "Register Operator"    "Регистрация в сети"
         menu_item 2 "📬" "Opt-in Trap"          "Подключить Trap"
-        menu_item 3 "♻️" "Restart Operator"     "Перезапуск контейнера"
-        menu_item 4 "⬆️" "Update Operator"      "Обновить образ"
+        menu_item 3 "♻️" "Restart Operator"     "Перезапуск"
+        menu_item 4 "⬆️" "Update Operator"      "Обновить"
         menu_item 5 "🗑" "Delete Operator"      "Удаление"
-        menu_item 6 "📜" "View_logs"            "Посмотреть логи"
+        menu_item 6 "📜" "View logs"            "Логи"
         menu_item 7 "↩️" "Back"                 "Назад в главное меню"
         echo; read -rp "$(show_gray 'Select operation ➤ ') " op_option
         echo
@@ -471,9 +479,9 @@ drosera_main_menu() {
         menu_header
         menu_item 1 "🧱" "Install System"     "Установка зависимостей"
         menu_item 2 "🧰" "Deploy Trap Project"  "Установка контракта"
-        menu_item 3 "🐳" "Deploy Operator"    "Сборка и запуск docker-compose"
-        menu_item 4 "🎛️" "Manage Operator"    "Регистрация / Opt-in / Update"
-        menu_item 5 "🚪" "Exit"               "Завершить работу"
+        menu_item 3 "🐳" "Deploy Operator"    "Установка оператора"
+        menu_item 4 "🎛️" "Manage Operator"    "Управление"
+        menu_item 5 "🚪" "Exit"               "Выход"
         echo; read -rp "$(show_gray 'Select option ➤ ') " option
         echo
 
