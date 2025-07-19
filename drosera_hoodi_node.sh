@@ -240,6 +240,38 @@ install_cli_tools() {
     show_green "✅ CLI toolchain ready"
 }
 
+initialize_trap_project() {
+    process_notification "📁 Initializing Drosera Trap project..."
+
+    droseraup
+    foundryup
+
+    mkdir -p ~/my-drosera-trap
+    cd ~/my-drosera-trap
+
+    echo
+    read -rp "$(show_orange '📧 Enter your Git email: ')" GIT_EMAIL
+    while ! [[ "$GIT_EMAIL" =~ ^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$ ]]; do
+        show_red "❌ Invalid email format"
+        read -rp "$(show_orange '📧 Please enter a valid Git email: ')" GIT_EMAIL
+    done
+
+    read -rp "$(show_orange '👤 Enter your Git username: ')" GIT_USERNAME
+    while [[ -z "$GIT_USERNAME" ]]; do
+        show_red "❌ Username cannot be empty"
+        read -rp "$(show_orange '👤 Enter your Git username: ')" GIT_USERNAME
+    done
+
+    git config --global user.email $GIT_EMAIL
+    git config --global user.name $GIT_USERNAME
+
+    show_orange "📦 Cloning template project..."
+    run_commands "forge init -t drosera-network/trap-foundry-template"
+    sleep 2
+
+    show_green "✅ Project initialized at ~/my-drosera-trap"
+}
+
 configure_trap_project() {
     process_notification "⚙️ Configuring trap project..."
 
@@ -476,7 +508,7 @@ drosera_main_menu() {
                 configure_firewall && \
                 install_cli_tools
                 ;;
-            2) source ~/.bashrc && initialize_trap_project && configure_trap_project;;
+            2) source /root/.bashrc && configure_trap_project;;
             3) deploy_operator ;;
             4) operator_menu ;;
             5) exit_script ;;
