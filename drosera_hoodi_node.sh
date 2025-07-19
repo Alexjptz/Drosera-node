@@ -200,6 +200,7 @@ install_docker() {
         show_red "❌ Docker test failed"
         show_gray "Try restarting the Docker service or rebooting"
     fi
+
 }
 
 configure_firewall() {
@@ -233,26 +234,9 @@ configure_firewall() {
 install_cli_tools() {
     process_notification "🧰 Installing CLI tools for Drosera Trap..."
 
-    # Drosera CLI
-    show_orange "🔧 Installing Drosera CLI..."
-    run_commands "curl -L https://app.drosera.io/install | bash"
-    sleep 2
-    source ~/.bashrc
-    droseraup
-
-    # Foundry CLI
-    show_orange "🔧 Installing Foundry (forge)..."
-    run_commands "curl -L https://foundry.paradigm.xyz | bash"
-    sleep 2
-    source ~/.bashrc
-    foundryup
-
-    # Bun
-    show_orange "🔧 Installing Bun (JavaScript runtime)..."
-    run_commands "curl -fsSL https://bun.sh/install | bash"
-    sleep 2
-    source ~/.bashrc
-
+    curl -L https://app.drosera.io/install | bash
+    curl -L https://foundry.paradigm.xyz | bash
+    curl -fsSL https://bun.sh/install | bash
     show_green "✅ CLI toolchain ready"
 }
 
@@ -486,8 +470,13 @@ drosera_main_menu() {
         echo
 
         case $option in
-            1) install_dependencies && install_docker && configure_firewall ;;
-            2) install_cli_tools && initialize_trap_project && configure_trap_project;;
+            1)
+                install_dependencies && \
+                install_docker && \
+                configure_firewall && \
+                install_cli_tools
+                ;;
+            2) source ~/.bashrc && initialize_trap_project && configure_trap_project;;
             3) deploy_operator ;;
             4) operator_menu ;;
             5) exit_script ;;
