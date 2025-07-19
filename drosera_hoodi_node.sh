@@ -246,8 +246,8 @@ initialize_trap_project() {
     droseraup
     foundryup
 
-    mkdir -p ~/my-drosera-trap
-    cd ~/my-drosera-trap
+    mkdir /root/my-drosera-trap
+    cd /root/my-drosera-trap
 
     echo
     read -rp "$(show_orange '📧 Enter your Git email: ')" GIT_EMAIL
@@ -275,7 +275,7 @@ initialize_trap_project() {
 configure_trap_project() {
     process_notification "⚙️ Configuring trap project..."
 
-    cd ~/my-drosera-trap
+    cd /root/my-drosera-trap
 
     read -rp "$(show_orange '🔑 Enter your Operator wallet (0x...): ')" OPERATOR_WALLET
     while [[ ! "$OPERATOR_WALLET" =~ ^0x[a-fA-F0-9]{40}$ ]]; do
@@ -508,7 +508,11 @@ drosera_main_menu() {
                 configure_firewall && \
                 install_cli_tools
                 ;;
-            2) source /root/.bashrc && configure_trap_project;;
+            2)
+                source /root/.bashrc && \
+                initialize_trap_project && \
+                configure_trap_project
+                ;;
             3) deploy_operator ;;
             4) operator_menu ;;
             5) exit_script ;;
