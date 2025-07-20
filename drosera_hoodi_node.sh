@@ -328,10 +328,6 @@ configure_trap_project() {
 
     echo
     read -rp "$(show_orange '🔐 Enter your ETH private key (starts with 0x): ')" ETH_PRIVATE_KEY
-    while [[ ! "$ETH_PRIVATE_KEY" =~ ^0x[a-fA-F0-9]{64}$ ]]; do
-        show_red "❌ Invalid private key format"
-        read -rp "$(show_orange '🔐 Please enter valid 0x private key: ')" ETH_PRIVATE_KEY
-    done
 
     VPS_IP=$(hostname -I | awk '{print $1}')
     show_orange "🌐 Detected VPS IP: $VPS_IP"
