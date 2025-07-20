@@ -327,7 +327,7 @@ configure_trap_project() {
     touch .env
 
     echo
-    read -rp "$(show_orange '🔐 Enter your ETH private key (starts with 0x): ')" ETH_PRIVATE_KEY
+    read -rp "$(show_orange '🔐 Enter your ETH private key: ')" ETH_PRIVATE_KEY
 
     VPS_IP=$(hostname -I | awk '{print $1}')
     show_orange "🌐 Detected VPS IP: $VPS_IP"
