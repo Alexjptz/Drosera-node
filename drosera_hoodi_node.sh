@@ -322,12 +322,14 @@ configure_trap_project() {
         show_red "⛔️ Invalid selection. Skipping address field update."
     fi
 
+    echo
+    read -rp "$(show_orange '🔐 Enter your ETH private key: ')" ETH_PRIVATE_KEY
+
+    run_commands "drosera apply --private-key $ETH_PRIVATE_KEY"
+
     mkdir -p ~/Drosera-Network
     cd ~/Drosera-Network || exit 1
     touch .env
-
-    echo
-    read -rp "$(show_orange '🔐 Enter your ETH private key: ')" ETH_PRIVATE_KEY
 
     VPS_IP=$(hostname -I | awk '{print $1}')
     show_orange "🌐 Detected VPS IP: $VPS_IP"

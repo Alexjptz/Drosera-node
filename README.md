@@ -12,10 +12,10 @@ Open ports: 31313 and 31314 (or your configured ports)
 # Faucet Links
 To mine or interact with contracts on the Hoodi Testnet, you'll need test ETH:
 
-# Mining Faucet:
+Mining Faucet:
 https://hoodi-faucet.pk910.de
 
-# Public Faucets:
+Public Faucets:
 https://faucet.quicknode.com/ethereum/hoodi
 https://stakely.io/faucet/ethereum-hoodi-testnet-eth
 
