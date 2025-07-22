@@ -142,7 +142,7 @@ print_logo() {
 
     echo
     show_green "⚙️  SYSTEM STATUS: ACTIVE"
-    show_orange ">> ACCESS GRANTED. WELCOME TO PIPE NETWORK."
+    show_orange ">> ACCESS GRANTED. WELCOME TO DROSERA NETWORK."
     show_gray "[DROSERA / Secure Terminal Session]"
     echo
 
@@ -281,7 +281,7 @@ configure_trap_project() {
     process_notification "⚙️ Configuring trap project..."
 
     cd /root/my-drosera-trap
-    
+
     bun install
     forge build
 
