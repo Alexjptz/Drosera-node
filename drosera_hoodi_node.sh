@@ -281,6 +281,9 @@ configure_trap_project() {
     process_notification "⚙️ Configuring trap project..."
 
     cd /root/my-drosera-trap
+    
+    bun install
+    forge build
 
     read -rp "$(show_orange '🔑 Enter your Operator wallet (0x...): ')" OPERATOR_WALLET
     while [[ ! "$OPERATOR_WALLET" =~ ^0x[a-fA-F0-9]{40}$ ]]; do
