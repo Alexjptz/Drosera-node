@@ -1,4 +1,5 @@
 #!/bin/bash
+set -Eeuo pipefail
 
 tput reset
 tput civis
@@ -160,6 +161,15 @@ print_logo() {
 
 # NODE FUNCTIONS
 
+init_bash_var() {
+  export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
+
+  for p in "$HOME/.drosera/bin" "$HOME/.foundry/bin" "$BUN_INSTALL/bin"; do
+    case ":$PATH:" in *":$p:"*) ;; *) PATH="$p:$PATH";; esac
+  done
+  export PATH
+}
+
 install_dependencies() {
     process_notification "🔧 Installing system dependencies..."
 
@@ -245,6 +255,7 @@ install_cli_tools() {
 }
 
 initialize_trap_project() {
+    init_bash_var
     process_notification "📁 Initializing Drosera Trap project..."
 
     droseraup
@@ -278,6 +289,7 @@ initialize_trap_project() {
 }
 
 configure_trap_project() {
+    init_bash_var
     process_notification "⚙️ Configuring trap project..."
 
     cd /root/my-drosera-trap
@@ -402,6 +414,7 @@ EOF
 }
 
 register_operator() {
+    init_bash_var
     source ~/Drosera-Network/.env
 
     process_notification "📝 Registering your Operator..."
@@ -413,6 +426,7 @@ register_operator() {
 }
 
 optin_trap() {
+    init_bash_var
     source ~/Drosera-Network/.env
 
     echo
