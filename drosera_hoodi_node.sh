@@ -292,10 +292,15 @@ configure_trap_project() {
     init_bash_var
     process_notification "⚙️ Configuring trap project..."
 
-    cd /root/my-drosera-trap
-
-    bun install
-    forge build
+    run_commands "cd /root/my-drosera-trap"
+    run_commands "sudo apt install nodejs"
+    run_commands "sudo apt install npm"
+    run_commands "cd ~/my-drosera-trap"
+    run_commands "rm -rf node_modules package-lock.json"
+    run_commands "npm install drosera-contracts"
+    run_commands "npm install"
+    run_commands "forge clean"
+    run_commands "forge build"
 
     read -rp "$(show_orange '🔑 Enter your Operator wallet (0x...): ')" OPERATOR_WALLET
     while [[ ! "$OPERATOR_WALLET" =~ ^0x[a-fA-F0-9]{40}$ ]]; do
