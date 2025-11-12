@@ -347,11 +347,6 @@ configure_trap_project() {
 
     run_commands "drosera apply --private-key $ETH_PRIVATE_KEY"
 
-}
-
-deploy_operator() {
-    process_notification "🐳 Deploying Drosera Operator via Docker Compose..."
-
     mkdir -p ~/Drosera-Network
     cd ~/Drosera-Network || exit 1
     touch .env
@@ -368,6 +363,12 @@ DRO__SERVER__PORT=31314
 EOF
 
     show_green "✅ .env file created at ~/Drosera-Network/.env"
+}
+
+deploy_operator() {
+    process_notification "🐳 Deploying Drosera Operator via Docker Compose..."
+
+    cd ~/Drosera-Network || exit 1
 
     # Проверяем наличие .env
     if [ ! -f .env ]; then
