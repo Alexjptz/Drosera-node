@@ -417,12 +417,12 @@ volumes:
   drosera_data:
 EOF
 
-    show_green "✅ docker-compose.yaml created"
+    show_green "✅ docker-compose.yml created"
 
     run_commands "docker pull ghcr.io/drosera-network/drosera-operator:latest"
     run_commands "docker compose down -v"
-    run_commands "docker stop drosera-node || true"
-    run_commands "docker rm drosera-node || true"
+    run_commands "docker stop drosera-operator || true"
+    run_commands "docker rm drosera-operator || true"
     run_commands "docker compose up -d"
 
     show_green "✅ Drosera Operator launched"
