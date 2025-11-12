@@ -354,9 +354,12 @@ configure_trap_project() {
     VPS_IP=$(hostname -I | awk '{print $1}')
     show_orange "🌐 Detected VPS IP: $VPS_IP"
 
-    cat > .env <<EOF
+    tee > .env <<EOF
+VERSION=v1.20.0
 ETH_PRIVATE_KEY=$ETH_PRIVATE_KEY
 VPS_IP=$VPS_IP
+RO__NETWORK__P2P_PORT=31313
+DRO__SERVER__PORT=31314
 EOF
 
     show_green "✅ .env file created at ~/Drosera-Network/.env"
@@ -375,8 +378,8 @@ deploy_operator() {
 
     source .env
 
-    # Генерация docker-compose.yaml
-    cat > docker-compose.yaml <<EOF
+    # Генерация docker-compose.yml
+    tee > docker-compose.yml <<EOF
 version: '3'
 services:
   drosera-operator:
@@ -384,17 +387,27 @@ services:
     container_name: drosera-operator
     network_mode: host
     environment:
-      - DRO__DB_FILE_PATH=/data/drosera.db
+      # Ethereum Mainnet (default network)
+      # - DRO__DROSERA_ADDRESS=0x01C344b8406c3237a6b9dbd06ef2832142866d87
+      # - DRO__ETH__CHAIN_ID=1
+      # - DRO__ETH__RPC_URL=https://ethereum-rpc.publicnode.com
+      # - DRO__ETH__BACKUP_RPC_URL=https://1rpc.io/eth
+
+      # Hoodi Testnet
       - DRO__DROSERA_ADDRESS=0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D
-      - DRO__LISTEN_ADDRESS=0.0.0.0
-      - DRO__DISABLE_DNR_CONFIRMATION=true
       - DRO__ETH__CHAIN_ID=560048
       - DRO__ETH__RPC_URL=https://ethereum-hoodi-rpc.publicnode.com
-      - DRO__ETH__BACKUP_RPC_URL=https://ethereum-hoodi-rpc.publicnode.com
+      - DRO__ETH__BACKUP_RPC_URL=https://1rpc.io/hoodi
+
+      - DRO__DATA_DIR=/data/.drosera/data
+      - DRO__LISTEN_ADDRESS=0.0.0.0
+      - DRO__DISABLE_DNR_CONFIRMATION=true
       - DRO__ETH__PRIVATE_KEY=${ETH_PRIVATE_KEY}
-      - DRO__NETWORK__P2P_PORT=31313
+      - DRO__NETWORK__P2P_PORT=${DRO__NETWORK__P2P_PORT}$
       - DRO__NETWORK__EXTERNAL_P2P_ADDRESS=${VPS_IP}
-      - DRO__SERVER__PORT=31314
+      - DRO__SERVER__PORT=${DRO__SERVER__PORT}
+      - DRO__GAS_REIMBURSEMENT_REQUIRED=true
+
     volumes:
       - drosera_data:/data
     command: ["node"]
@@ -402,6 +415,41 @@ services:
 
 volumes:
   drosera_data:
+EOF
+
+
+tee docker-compose.yml > /dev/null <<'EOF'
+version: '3'
+services:
+  drosera-operator:
+    image: ghcr.io/drosera-network/drosera-operator:${VERSION}
+    container_name: drosera-operator
+    network_mode: host
+    environment:
+      # Ethereum Mainnet
+      - DRO__DROSERA_ADDRESS=0x01C344b8406c3237a6b9dbd06ef2832142866d87
+      - DRO__ETH__CHAIN_ID=1
+      - DRO__ETH__RPC_URL=https://ethereum-rpc.publicnode.com
+      - DRO__ETH__BACKUP_RPC_URL=https://1rpc.io/eth
+
+      # Hoodi Testnet
+      # - DRO__DROSERA_ADDRESS=0x91cB447BaFc6e0EA0F4Fe056F5a9b1F14bb06e5D
+      # - DRO__ETH__CHAIN_ID=560048
+      # - DRO__ETH__RPC_URL=https://ethereum-hoodi-rpc.publicnode.com
+      # - DRO__ETH__BACKUP_RPC_URL=https://1rpc.io/hoodi
+
+      - DRO__DATA_DIR=/data/.drosera/data
+      - DRO__LISTEN_ADDRESS=0.0.0.0
+      - DRO__DISABLE_DNR_CONFIRMATION=true
+      - DRO__ETH__PRIVATE_KEY=${ETH_PRIVATE_KEY}
+      - DRO__NETWORK__P2P_PORT=${DRO__NETWORK__P2P_PORT}$
+      - DRO__NETWORK__EXTERNAL_P2P_ADDRESS=${VPS_PUBLIC_IP}
+      - DRO__SERVER__PORT=${DRO__SERVER__PORT}
+      - DRO__GAS_REIMBURSEMENT_REQUIRED=true
+    volumes:
+      - /var/lib/drosera-data:/data
+    command: ["node"]
+    restart: always
 EOF
 
     show_green "✅ docker-compose.yaml created"
